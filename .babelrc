@@ -1,0 +1,14 @@
+{
+    "plugins": ["@babel/syntax-dynamic-import"],
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "modules": false,
+                "useBuiltIns": "usage",
+                // https://alexbogovich.com/blog/core-js/
+                "corejs": 3
+            }
+        ]
+    ]
+}

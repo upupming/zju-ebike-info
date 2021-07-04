@@ -25,6 +25,8 @@ table.className = 'charger-table'
 chargerInfo.map(data => createTrForData(data)).forEach(data => table.appendChild(data))
 document.getElementById('charger-table-container').appendChild(table)
 
-console.log(chargerInfo)
-
 document.getElementById('last-fetch-time').innerHTML = lastFetchTime
+
+document.getElementById('refresh-btn').onclick = (evt) => {
+    window.location = location.protocol + '//' + location.host + location.pathname + `?time=${Number(new Date())}`;
+}

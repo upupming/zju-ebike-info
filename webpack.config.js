@@ -11,6 +11,7 @@ const getConfig = async () => ({
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        filename: '[name]-[chunkhash].js'
     },
     devServer: {
         open: true,

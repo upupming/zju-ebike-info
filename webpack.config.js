@@ -4,6 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { getChargerInfo, getDateTime } = require('./util');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -27,6 +28,10 @@ const getConfig = async () => ({
         new webpack.DefinePlugin({
             chargerInfo: JSON.stringify(await getChargerInfo),
             lastFetchTime: JSON.stringify(getDateTime())
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name]-[chunkhash].css',
+            chunkFilename: '[id]-[chunkhash].css'
         })
     ],
     module: {
@@ -37,7 +42,7 @@ const getConfig = async () => ({
             },
             {
                 test: /\.less$/i,
-                use: ['style-loader', 'css-loader', 'less-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

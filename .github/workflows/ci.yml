@@ -10,7 +10,8 @@ on:
       - main
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '5 * * * *'
+    # In order to provide a more reliable experience, we’ve set the minimum time period for scheduled runs to 5 minutes. A schedule of * * * * * which would previously run every minute will now run every five minutes.
+    - cron:  '* * * * *'
 jobs:
   build-and-prerelease:
     runs-on: macos-latest

@@ -1,9 +1,9 @@
 const axios = require("axios").default
 const cheerio = require('cheerio').default
-const dotenv = require('dotenv').config()
+require('dotenv').config()
 
 const getCookie = async () => {
-    const authRes = await axios.get(`http://cd.houqinbao.com/index.php?m=home&c=index&a=index&openid=${process.env.openid}&selfopenid=${process.env.selfopenid}`)
+    const authRes = await axios.get(`http://cd.houqinbao.com/index.php?m=home&c=index&a=index&openid=${process.env.OPENID}&selfopenid=${process.env.SELFOPENID}`)
     return authRes.headers['set-cookie']
 }
 

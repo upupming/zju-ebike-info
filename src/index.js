@@ -23,7 +23,11 @@ const isStar = (name) => {
     return false
 }
 const doStar = (name) => {
-    localStorage.setItem(`${isStarPrefix}_${name}`, JSON.stringify(true))
+    if (!isStar(name)) {
+        localStorage.setItem(`${isStarPrefix}_${name}`, JSON.stringify(true))
+    } else {
+        localStorage.removeItem(`${isStarPrefix}_${name}`)
+    }
 }
 
 const createTrForData = (info) => {

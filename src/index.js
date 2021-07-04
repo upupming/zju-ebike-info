@@ -7,10 +7,35 @@ const campus2keywords = {
     '西溪': ['西溪'],
     '华家池': ['华家池']
 }
-const chosenCampus = new Set(Object.keys(campus2keywords))
+const chosenCampusCacheKey = 'chosenCampusCacheKey'
+const chosenCampus = new Set(JSON.parse(localStorage.getItem(chosenCampusCacheKey)) || Object.keys(campus2keywords))
+
+const cboxs = document.querySelectorAll('input[type=checkbox]')
+cboxs.forEach(cbox => {
+    cbox.checked = chosenCampus.has(cbox.value)
+})
+
+const isStarPrefix = 'isStarPrefix'
+const isStar = (name) => {
+    if (localStorage.getItem(`${isStarPrefix}_${name}`)) {
+        return true
+    }
+    return false
+}
+const doStar = (name) => {
+    localStorage.setItem(`${isStarPrefix}_${name}`, JSON.stringify(true))
+}
 
 const createTrForData = (info) => {
     const tr = document.createElement('tr')
+    const starEle = document.createElement('td')
+    starEle.className = 'star'
+    starEle.innerHTML = isStar(info.name) ? '★' : '☆'
+    starEle.onclick = () => {
+        doStar(info.name)
+        refreshTable()
+    }
+    tr.appendChild(starEle)
     const nameEle = document.createElement('td')
     nameEle.className = 'name'
     nameEle.innerHTML = info.name
@@ -38,13 +63,17 @@ const filterData = (data) => {
     return false
 }
 
-const refreshTable = () => {
+function refreshTable() {
     const tableContainer = document.getElementById('charger-table-container')
     tableContainer.innerHTML = ''
 
     const table = document.createElement('table')
     table.className = 'charger-table'
-    const filteredData = chargerInfo.filter(filterData).sort((a, b) => a.name.localeCompare(b.name, 'zh-cn'))
+    const filteredData = chargerInfo.filter(filterData).sort((a, b) => {
+        if (isStar(a.name) && !(isStar(b.name))) return -1
+        if (isStar(b.name) && !(isStar(a.name))) return 1
+        return a.name.localeCompare(b.name, 'zh-cn')
+    })
 
     document.getElementById('total-num').innerHTML = filteredData.length
 
@@ -67,5 +96,6 @@ window.checkBoxClicked = function (cbox) {
     } else {
         chosenCampus.delete(cbox.value)
     }
+    localStorage.setItem(chosenCampusCacheKey, JSON.stringify(Array.from(chosenCampus)))
     refreshTable()
 }

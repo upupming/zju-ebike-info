@@ -22,7 +22,7 @@ const isStar = (name) => {
     }
     return false
 }
-const doStar = (name) => {
+const toggleStar = (name) => {
     if (!isStar(name)) {
         localStorage.setItem(`${isStarPrefix}_${name}`, JSON.stringify(true))
     } else {
@@ -36,7 +36,7 @@ const createTrForData = (info) => {
     starEle.className = 'star'
     starEle.innerHTML = isStar(info.name) ? '★' : '☆'
     starEle.onclick = () => {
-        doStar(info.name)
+        toggleStar(info.name)
         refreshTable()
     }
     tr.appendChild(starEle)
